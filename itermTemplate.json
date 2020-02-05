@@ -1,0 +1,547 @@
+{
+  "Badge Text" : "Local",
+  "Working Directory" : "\/Users\/thanusiak",
+  "Prompt Before Closing 2" : 1,
+  "Selected Text Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0,
+    "Blue Component" : 0
+  },
+  "Rows" : 25,
+  "Ansi 11 Color" : {
+    "Green Component" : 1,
+    "Red Component" : 1,
+    "Blue Component" : 0.3333333432674408
+  },
+  "Use Italic Font" : true,
+  "Foreground Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0.73333334922790527,
+    "Blue Component" : 0.73333334922790527
+  },
+  "Right Option Key Sends" : 0,
+  "Character Encoding" : 4,
+  "Selection Color" : {
+    "Green Component" : 0.8353000283241272,
+    "Red Component" : 0.70980000495910645,
+    "Blue Component" : 1
+  },
+  "Triggers" : [
+    {
+      "partial" : true,
+      "parameter" : "",
+      "regex" : "'s password:",
+      "action" : "PasswordTrigger"
+    }
+  ],
+  "Mouse Reporting" : true,
+  "Ansi 4 Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0,
+    "Blue Component" : 0.73333334922790527
+  },
+  "Non-ASCII Anti Aliased" : true,
+  "Sync Title" : true,
+  "Disable Window Resizing" : true,
+  "Description" : "Default",
+  "Close Sessions On End" : true,
+  "Jobs to Ignore" : [
+    "rlogin",
+    "ssh",
+    "slogin",
+    "telnet"
+  ],
+  "Scrollback With Status Bar" : false,
+  "Scrollback Lines" : 5000,
+  "Flashing Bell" : false,
+  "Cursor Guide Color" : {
+    "Red Component" : 0.70213186740875244,
+    "Color Space" : "sRGB",
+    "Blue Component" : 1,
+    "Alpha Component" : 0.25,
+    "Green Component" : 0.9268307089805603
+  },
+  "BM Growl" : true,
+  "AWDS Window Directory" : "",
+  "Icon" : 0,
+  "Ansi 3 Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0.73333334922790527,
+    "Blue Component" : 0
+  },
+  "Use Non-ASCII Font" : false,
+  "Shortcut" : "",
+  "Link Color" : {
+    "Red Component" : 0,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0.73423302173614502,
+    "Alpha Component" : 1,
+    "Green Component" : 0.35916060209274292
+  },
+  "Background Image Location" : "",
+  "Bold Color" : {
+    "Green Component" : 1,
+    "Red Component" : 1,
+    "Blue Component" : 1
+  },
+  "Unlimited Scrollback" : false,
+  "Custom Command" : "Yes",
+  "AWDS Tab Option" : "No",
+  "Smart Selection Rules" : [
+    {
+      "notes" : "Utils",
+      "precision" : "very_high",
+      "regex" : "\\S+",
+      "actions" : [
+        {
+          "title" : "UTILS: Node utilization",
+          "action" : 4,
+          "parameter" : "kubectl describe node | sed -n -e '\/Non-terminated\/,\/Events\/p' -e 's\/Name:\/\\\\n---:>&\/p'"
+        },
+        {
+          "title" : "UTILS: Docker login ",
+          "action" : 4,
+          "parameter" : "docker login docker-registry.default.svc:5000 -u ocadmin -p $(oc whoami -t)"
+        },
+        {
+          "title" : "UTILS: Oc login ",
+          "action" : 4,
+          "parameter" : "oc login -u ocadmin -p ocadmin"
+        },
+        {
+          "title" : "UTILS: Check status",
+          "action" : 4,
+          "parameter" : " kubectl get po --all-namespaces -o wide| grep -Ev '1\/1 .* R|2\/2 .* R|3\/3 .* R|4\/4 .* R' | grep -v 'Completed'"
+        },
+        {
+          "title" : "UTILS: Get events",
+          "action" : 4,
+          "parameter" : "kubectl get events --sort-by='{.lastTimestamp}'"
+        },
+        {
+          "title" : "UTILS: Kill 'Em All",
+          "action" : 4,
+          "parameter" : "echo \" #!\/bin\/bash \" > term.txt  ; for pod in $(kubectl get po --all-namespaces -o wide --no-headers| grep -v Pending| grep -Ev 'Init:[\/d]'| grep -v Creating| grep -Ev '1\/1 .* R|2\/2 .* R|3\/3 .* R|4\/4 .* R' | grep -v 'Completed'| awk {'print $1\"%\"$2'}); do ns=$(echo $pod | cut -d'%' -f1); p=$(echo $pod | cut -d'%' -f2); echo $p; echo -n \" kubectl -n $ns delete pod $p & \" >> term.txt ; done; chmod +x term.txt; .\/term.txt;"
+        },
+        {
+          "title" : "UTILS: Top nodes",
+          "action" : 4,
+          "parameter" : "kubectl top nodes ; oc adm top nodes"
+        },
+        {
+          "title" : "UTILS: Get nodes",
+          "action" : 4,
+          "parameter" : "kubectl get nodes -owide"
+        }
+      ]
+    },
+    {
+      "notes" : "Magic pod",
+      "precision" : "very_low",
+      "regex" : "(\\S+)\\s+([a-zA-Z0-9]+[-]+[a-zA-Z0-9-\\.]+)",
+      "actions" : [
+        {
+          "title" : "GENERIC POD: Logs",
+          "action" : 4,
+          "parameter" : "kubectl logs \\2 -n \\1 --since=1h"
+        },
+        {
+          "title" : "GENERIC POD: Describe",
+          "action" : 4,
+          "parameter" : "kubectl describe pod \\2 -n \\1"
+        },
+        {
+          "title" : "GENERIC POD: Exec into",
+          "action" : 4,
+          "parameter" : "kubectl exec -it \\2 -n \\1 -- bash"
+        },
+        {
+          "title" : "GENERIC POD: Delete",
+          "action" : 4,
+          "parameter" : "kubectl delete pod \\2 -n \\1"
+        },
+        {
+          "title" : "GENERIC POD: Force delete",
+          "action" : 4,
+          "parameter" : "kubectl  delete pod \\2  --force --grace-period=0 -n \\1"
+        }
+      ]
+    },
+    {
+      "notes" : "Magic all",
+      "precision" : "very_low",
+      "regex" : "(\\S+)\\s+(\\S+\/{1}[^\\d]\\S+)",
+      "actions" : [
+        {
+          "title" : "GENERIC ITEM: Describe",
+          "action" : 4,
+          "parameter" : "kubectl describe \\2 -n \\1"
+        },
+        {
+          "title" : "GENERIC ITEM: Delete",
+          "action" : 4,
+          "parameter" : "kubectl delete \\2 -n \\1"
+        },
+        {
+          "title" : "GENERIC ITEM: Force delete",
+          "action" : 4,
+          "parameter" : "kubectl delete \\2 --force --grace-period=0 -n \\1"
+        }
+      ]
+    },
+    {
+      "notes" : "Magic all current",
+      "precision" : "very_low",
+      "regex" : "(\\S+\/{1}[^\\d]\\S+)",
+      "actions" : [
+        {
+          "title" : "ITEM: Describe",
+          "action" : 4,
+          "parameter" : "kubectl describe \\1"
+        },
+        {
+          "title" : "ITEM: Delete",
+          "action" : 4,
+          "parameter" : "kubectl delete \\1"
+        },
+        {
+          "title" : "ITEM: Force delete",
+          "action" : 4,
+          "parameter" : "kubectl delete \\1 --force --grace-period=0"
+        }
+      ]
+    },
+    {
+      "notes" : "Magic pod",
+      "precision" : "very_high",
+      "regex" : "[a-zA-Z0-9]+[-]+[a-zA-Z0-9-\\.]+",
+      "actions" : [
+        {
+          "title" : "POD: Logs",
+          "action" : 4,
+          "parameter" : "kubectl logs \\0  --since=1h"
+        },
+        {
+          "title" : "POD: Describe",
+          "action" : 4,
+          "parameter" : "kubectl  describe pod \\0"
+        },
+        {
+          "title" : "POD: Exec into",
+          "action" : 4,
+          "parameter" : "kubectl exec -it \\0 -- bash"
+        },
+        {
+          "title" : "POD: Delete",
+          "action" : 4,
+          "parameter" : "kubectl delete pod \\0"
+        },
+        {
+          "title" : "POD: Force delete",
+          "action" : 4,
+          "parameter" : "kubectl  delete pod \\0  --force --grace-period=0 "
+        }
+      ]
+    }
+  ],
+  "Keyboard Map" : {
+    "0xf700-0x260000" : {
+      "Action" : 10,
+      "Text" : "[1;6A"
+    },
+    "0x37-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x1f"
+    },
+    "0x32-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x00"
+    },
+    "0xf709-0x20000" : {
+      "Action" : 10,
+      "Text" : "[17;2~"
+    },
+    "0xf70c-0x20000" : {
+      "Action" : 10,
+      "Text" : "[20;2~"
+    },
+    "0xf729-0x20000" : {
+      "Action" : 10,
+      "Text" : "[1;2H"
+    },
+    "0xf72b-0x40000" : {
+      "Action" : 10,
+      "Text" : "[1;5F"
+    },
+    "0xf705-0x20000" : {
+      "Action" : 10,
+      "Text" : "[1;2Q"
+    },
+    "0xf703-0x260000" : {
+      "Action" : 10,
+      "Text" : "[1;6C"
+    },
+    "0xf700-0x220000" : {
+      "Action" : 10,
+      "Text" : "[1;2A"
+    },
+    "0xf701-0x280000" : {
+      "Action" : 11,
+      "Text" : "0x1b 0x1b 0x5b 0x42"
+    },
+    "0x38-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x7f"
+    },
+    "0x33-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x1b"
+    },
+    "0xf703-0x220000" : {
+      "Action" : 10,
+      "Text" : "[1;2C"
+    },
+    "0xf701-0x240000" : {
+      "Action" : 10,
+      "Text" : "[1;5B"
+    },
+    "0xf70d-0x20000" : {
+      "Action" : 10,
+      "Text" : "[21;2~"
+    },
+    "0xf702-0x260000" : {
+      "Action" : 10,
+      "Text" : "[1;6D"
+    },
+    "0xf729-0x40000" : {
+      "Action" : 10,
+      "Text" : "[1;5H"
+    },
+    "0xf706-0x20000" : {
+      "Action" : 10,
+      "Text" : "[1;2R"
+    },
+    "0x34-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x1c"
+    },
+    "0xf700-0x280000" : {
+      "Action" : 11,
+      "Text" : "0x1b 0x1b 0x5b 0x41"
+    },
+    "0x2d-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x1f"
+    },
+    "0xf70e-0x20000" : {
+      "Action" : 10,
+      "Text" : "[23;2~"
+    },
+    "0xf702-0x220000" : {
+      "Action" : 10,
+      "Text" : "[1;2D"
+    },
+    "0xf703-0x280000" : {
+      "Action" : 11,
+      "Text" : "0x1b 0x1b 0x5b 0x43"
+    },
+    "0xf700-0x240000" : {
+      "Action" : 10,
+      "Text" : "[1;5A"
+    },
+    "0xf707-0x20000" : {
+      "Action" : 10,
+      "Text" : "[1;2S"
+    },
+    "0xf70a-0x20000" : {
+      "Action" : 10,
+      "Text" : "[18;2~"
+    },
+    "0x35-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x1d"
+    },
+    "0xf70f-0x20000" : {
+      "Action" : 10,
+      "Text" : "[24;2~"
+    },
+    "0xf703-0x240000" : {
+      "Action" : 10,
+      "Text" : "[1;5C"
+    },
+    "0xf701-0x260000" : {
+      "Action" : 10,
+      "Text" : "[1;6B"
+    },
+    "0xf702-0x280000" : {
+      "Action" : 11,
+      "Text" : "0x1b 0x1b 0x5b 0x44"
+    },
+    "0xf72b-0x20000" : {
+      "Action" : 10,
+      "Text" : "[1;2F"
+    },
+    "0x36-0x40000" : {
+      "Action" : 11,
+      "Text" : "0x1e"
+    },
+    "0xf708-0x20000" : {
+      "Action" : 10,
+      "Text" : "[15;2~"
+    },
+    "0xf701-0x220000" : {
+      "Action" : 10,
+      "Text" : "[1;2B"
+    },
+    "0xf70b-0x20000" : {
+      "Action" : 10,
+      "Text" : "[19;2~"
+    },
+    "0xf702-0x240000" : {
+      "Action" : 10,
+      "Text" : "[1;5D"
+    },
+    "0xf704-0x20000" : {
+      "Action" : 10,
+      "Text" : "[1;2P"
+    }
+  },
+  "Ansi 14 Color" : {
+    "Green Component" : 1,
+    "Red Component" : 0.3333333432674408,
+    "Blue Component" : 1
+  },
+  "Ansi 2 Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0,
+    "Blue Component" : 0
+  },
+  "Send Code When Idle" : false,
+  "ASCII Anti Aliased" : true,
+  "Tags" : [
+    "Local"
+  ],
+  "Ansi 9 Color" : {
+    "Green Component" : 0.3333333432674408,
+    "Red Component" : 1,
+    "Blue Component" : 0.3333333432674408
+  },
+  "Use Bold Font" : true,
+  "Silence Bell" : false,
+  "Ansi 12 Color" : {
+    "Green Component" : 0.3333333432674408,
+    "Red Component" : 0.3333333432674408,
+    "Blue Component" : 1
+  },
+  "Window Type" : 0,
+  "Use Bright Bold" : true,
+  "Has Hotkey" : false,
+  "Cursor Text Color" : {
+    "Green Component" : 1,
+    "Red Component" : 1,
+    "Blue Component" : 1
+  },
+  "Default Bookmark" : "No",
+  "Cursor Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0.73333334922790527,
+    "Blue Component" : 0.73333334922790527
+  },
+  "Ansi 1 Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0.73333334922790527,
+    "Blue Component" : 0
+  },
+  "Name" : "Local",
+  "Blinking Cursor" : false,
+  "Guid" : "CD2D6338-CAC1-45CD-B6DC-128338FA4A6F",
+  "Ansi 8 Color" : {
+    "Green Component" : 0.3333333432674408,
+    "Red Component" : 0.3333333432674408,
+    "Blue Component" : 0.3333333432674408
+  },
+  "Ansi 10 Color" : {
+    "Green Component" : 1,
+    "Red Component" : 0.3333333432674408,
+    "Blue Component" : 0.3333333432674408
+  },
+  "Idle Code" : 0,
+  "Badge Color" : {
+    "Red Component" : 1,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0,
+    "Alpha Component" : 0.5,
+    "Green Component" : 0.1491314172744751
+  },
+  "Semantic History" : {
+    "editor" : "com.sublimetext.3",
+    "text" : "",
+    "action" : "best editor"
+  },
+  "Ambiguous Double Width" : false,
+  "Ansi 0 Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0,
+    "Blue Component" : 0
+  },
+  "AWDS Pane Directory" : "",
+  "Blur" : false,
+  "Normal Font" : "Monaco 12",
+  "Application Keypad Allowed" : false,
+  "Vertical Spacing" : 1,
+  "Ansi 7 Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0.73333334922790527,
+    "Blue Component" : 0.73333334922790527
+  },
+  "AWDS Tab Directory" : "",
+  "AWDS Pane Option" : "No",
+  "Command" : "",
+  "Terminal Type" : "xterm-256color",
+  "Horizontal Spacing" : 1,
+  "Tab Color" : {
+    "Red Component" : 0,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0.78166204690933228,
+    "Alpha Component" : 1,
+    "Green Component" : 0.77425903081893921
+  },
+  "Option Key Sends" : 0,
+  "Ansi 15 Color" : {
+    "Green Component" : 1,
+    "Red Component" : 1,
+    "Blue Component" : 1
+  },
+  "Open Toolbelt" : false,
+  "Ansi 6 Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0,
+    "Blue Component" : 0.73333334922790527
+  },
+  "Transparency" : 0,
+  "Background Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0,
+    "Blue Component" : 0
+  },
+  "Screen" : -1,
+  "AWDS Window Option" : "No",
+  "Bound Hosts" : [
+
+  ],
+  "Non Ascii Font" : "Monaco 12",
+  "Ansi 13 Color" : {
+    "Green Component" : 0.3333333432674408,
+    "Red Component" : 1,
+    "Blue Component" : 1
+  },
+  "Columns" : 80,
+  "Use Tab Color" : true,
+  "Visual Bell" : true,
+  "Custom Directory" : "No",
+  "Ansi 5 Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0.73333334922790527,
+    "Blue Component" : 0.73333334922790527
+  }
+}
