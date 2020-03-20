@@ -111,12 +111,12 @@
         {
           "title" : "UTILS: Check status",
           "action" : 4,
-          "parameter" : " kubectl get po --all-namespaces -o wide| grep -Ev '1\/1 .* R|2\/2 .* R|3\/3 .* R|4\/4 .* R' | grep -v 'Completed'"
+          "parameter" : " kubectl get po --no-headers --all-namespaces -o wide| grep -Ev '1\/1 .* R|2\/2 .* R|3\/3 .* R|4\/4 .* R' | grep -v 'Completed'"
         },
         {
           "title" : "UTILS: Get events",
           "action" : 4,
-          "parameter" : "kubectl get events --sort-by='{.lastTimestamp}'"
+          "parameter" : "kubectl get events --sort-by='{.metadata.creationTimestamp}'"
         },
         {
           "title" : "UTILS: Kill 'Em All",
